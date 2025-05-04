@@ -16,6 +16,19 @@ const Checkboxes = ({ data, checked, setChecked }) => {
 
       updateChildren(node);
 
+      const verifyChecked = (node) => {
+        if (!node.children) {
+          return newState[node.id] || false;
+        }
+        const allChildrenChecked = node.children.every((child) =>
+          verifyChecked(child)
+        );
+
+        newState[node.id] = allChildrenChecked;
+        return allChildrenChecked;
+      };
+      checkboxesData.forEach((node) => verifyChecked(node));
+
       return newState;
     });
   };
